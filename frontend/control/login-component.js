@@ -4,17 +4,24 @@ new Vue(
         el: '#login-component',
         data: {
             username: '',
-            status: '',
+            password:'',
+            status: ''
         },
         methods: {
             login: function(){
-                let s = '';
-                if(this.username === 'root') {
-                    s='ALLOW';
-                } else {
-                    s='DENY';
-                }
-                this.status = s;
+                    axios.post('http://localhost:3000/login', 
+                    {
+                        username: this.username, 
+                        password: this.password
+                    }).then(response => { 
+                        this.status = response.data;
+                        if (response.data.status === 'ALLOW') {
+                            localStorage.setItem('token', response.data.token);
+                            window.location='secured-pages/dashboard.html';
+                        } else {
+                            this.status = 'Please try again';
+                        }
+                    });
             }
         }
     }

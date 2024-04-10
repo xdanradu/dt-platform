@@ -1,7 +1,9 @@
 let express = require('express');
 let cors = require('cors');
 const fs = require('fs');
-const carsFilepath = './movies.json';
+let token = require('./src/auth.js').token;
+
+const moviesFilepath = './movies.json';
 let api = express();
 api.use(cors());
 
@@ -18,55 +20,13 @@ api.get('/', function (request, response) {
 });
 
 api.get('/movies', function (request, response) {
-  response.json(getCars());
+  response.json(getMovies());
 });
 
-api.get('/movies/:id', function (request, response) {
-  let car = getCarById(request.params.id);
-  if (car) response.json(car);
-  response.json('not found');
-});
-
-api.put('/movies', function (request, response) {
-  saveCar(request.body);
-  response.json('User was saved succesfully');
-});
-
-api.post('/movies', function (request, response) {
-  // in request o sa-mi vina un obiect de tip car care o sa aiba un anumit id
-  // console.log(request.body);//un obiect de tipul car actualizat pe client
-  // citim cars din fisier pe baza id-ului primit de la client
-  let car = request.body;
-  let cars = getCars();// citire json din fisier
-  // cautam daca exista id de pe request.body
-  // daca exista actualizam parametrii acestui produs/item
-  for(let i=0; i < cars.length; i++) {
-    if (cars[i].id === car.id) {
-      cars[i] = car;
-    }
-  }
-
-  // salvam in fisier produsele actualizate
-  try {
-    fs.writeFileSync(carsFilepath, JSON.stringify(cars));// salvare json array in fisier
-  } catch (err) {
-    console.error(err)
-  }
-
-  response.json('Car was updated succesfully');
-});
-
-api.delete('/movies/:index', function (request, response) {
-  // delete din fisier pe baza unui id
-  // cars.splice(request.params.index, 1);
-  console.log(request.params.index);
-  response.json('User with index ' + request.params.index + ' was deleted');
-});
-
-function getCars() {
+function getMovies() {
   let cars = [];
   try {
-    cars = JSON.parse(fs.readFileSync(carsFilepath, 'utf8'));
+    cars = JSON.parse(fs.readFileSync(moviesFilepath, 'utf8'));
   } catch (err) {
     console.error(err);
     return false;
@@ -74,36 +34,14 @@ function getCars() {
   return cars;
 }
 
-function saveCar(car) {
-  let cars = getCars();// citire json din fisier
-  let maxId = getMaxId(cars);  // get maximum id form cars array
-  car.id = maxId+1;// generare id unic
-  cars.push(car);// adaugare masina noua in array
-  try {
-    fs.writeFileSync(carsFilepath, JSON.stringify(cars));// salvare json array in fisier
-  } catch (err) {
-    console.error(err)
+api.post('/login', function (request, response) {
+  if(request.body.username.length > 2 && 
+    request.body.password === '321access') {
+    response.json({status: 'ALLOW', token: token()});
+  } else {
+    response.json({status: 'DENY'});
   }
-}
-
-function getMaxId(cars) {
-  let max = 0;
-  for (var i=0; i<cars.length;i++) {
-    if(max < cars[i].id) {
-      max = cars[i].id;
-    }
-  }
-  return max;
-}
-
-function getCarById(id){
-  let cars = getCars();// citire json din fisier
-  let selectedCar = null;
-  for(var i=0; i<cars.length; i++) {
-    if(id == cars[i].id) selectedCar = cars[i];
-  }
-  return selectedCar;
-}
+});
 
 api.listen(3000, function () {
     console.log('Server running @ localhost:3000');
