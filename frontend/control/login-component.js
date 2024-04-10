@@ -17,6 +17,7 @@ new Vue(
                         this.status = response.data;
                         if (response.data.status === 'ALLOW') {
                             localStorage.setItem('token', response.data.token);
+                            localStorage.setItem('username', this.username);
                             window.location='secured-pages/dashboard.html';
                         } else {
                             this.status = 'Please try again';

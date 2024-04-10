@@ -10,10 +10,14 @@ new Vue(
         created: function(){
            this.socketId = socket.id;
            globalMessages$.pipe(
+     /*       rxjs.tap(e=>console.log(e)),
             rxjs.map( entries =>
-                entries.map((e) => `Message:${e.message}`)
-            )
-           ).subscribe(messages=>this.messages = messages);
+                entries.map((e) => `${e.userId}:${e.message}`)
+            )*/
+           ).subscribe(messages=>
+            { 
+            this.messages = messages; 
+        });
         },
         methods: {
             send: function() {
