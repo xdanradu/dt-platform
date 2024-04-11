@@ -20,7 +20,7 @@ server.on('connection', socket => {
   socket.on('auth', payload => {
     // console.log(`auth token: ${payload.username} ${payload.token} ${socket.id}`);
     for (let [key, client] of connectedClients) {
-      connectedUsers.set(socket.id, payload);
+      // connectedUsers.set(socket.id, payload);
     }
   });
 
@@ -30,12 +30,13 @@ server.on('connection', socket => {
 });
 
 function sendMessageToAllOtherClients(sender, message) {
+  if (!connectedUsers.get(sender.id)) {
+    connectedUsers.set(sender.id, { username: message.username});
+  }
+  console.log(connectedUsers);
+  
   const userId = connectedUsers.get(sender.id)?.username || sender.id;
-
-  // console.log(connectedUsers.username);
   for (let [key, socket] of connectedClients) {
-    // console.log('message', message);
-
-    socket.emit('message-from-server', { userId: userId, message: message });
+    socket.emit('message-from-server', { userId: userId, message: message.text });
   }
 }

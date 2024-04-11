@@ -21,7 +21,7 @@ new Vue(
         },
         methods: {
             send: function() {
-                socket.emit('chat', this.message);
+                socket.emit('chat', { username: localStorage.getItem('username'), text: this.message});
             }
         }
     }
