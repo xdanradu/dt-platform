@@ -8,7 +8,7 @@
         <h3>HTTP movies API</h3>
         <div class="movies-wrapper">
             <div class="movie" v-for="movie of movies">
-                <img v-bind:src="`http://localhost:4200/${movie.img}`"/>
+                <img v-bind:src="`${resourcesApi}/${movie.img}`"/>
             </div>
         </div>
     </div>

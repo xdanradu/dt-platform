@@ -1,8 +1,8 @@
 {
-    "name": "resources-api",
+    "name": "frontend",
     "version": "0.0.1",
     "scripts": {
-      "start": "live-server --port=55970"
+      "start": "live-server --port=4200"
     },
     "dependencies": {
       "live-server": "^1.2.1"
