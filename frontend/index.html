@@ -1,18 +1,58 @@
 <html>
 <head>
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
 
     <div class="card" id="login-component">
-        <h3>Login</h3>
-        <input v-model="username" placeholder="Username" type="text"/>
-        <input v-model="password" placeholder="Password" type="password"/>
-        <button v-on:click="login()">Login</button>
-        {{status}}
+
+        <main class="form-signin w-100 m-auto">
+            <div>
+              <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+          
+              <div class="form-floating">
+                <input v-model="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+              </div>
+              <div class="form-floating">
+                <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+
+              <button class="mt-4 btn btn-primary w-100 py-2"
+                v-on:click="login()">Sign in</button>
+              <p class="mt-2 mb-3 text-body-secondary">© 2024</p>
+            </div>
+            {{status}}
+          </main>
+
     </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- External libraries -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="libs/axios.js"></script>
     <script src="libs/vue.js"></script>
     

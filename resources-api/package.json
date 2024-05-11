@@ -4,8 +4,8 @@
     "scripts": {
       "start": "live-server --port=55970"
     },
-    "dependencies": {
-      "live-server": "^1.2.1"
+    "devDependencies": {
+      "bootstrap": "5.3.3"
     }
   }
   

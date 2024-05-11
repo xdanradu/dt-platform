@@ -23,6 +23,33 @@ api.get('/movies', function (request, response) {
   response.json(getMovies());
 });
 
+api.delete('/movies/:id', function (request, response) {
+  let movies = getMovies();
+  let index = getIndexFor(parseInt(request.params.id), movies);
+  if (index) {
+    console.log('idul exista');
+    movies.splice(index, 1);
+  }
+
+  try {
+    fs.writeFileSync(moviesFilepath, JSON.stringify(movies));
+  } catch (err) {
+    console.error(err)
+  }
+
+  // persist change in file
+  response.json(movies);
+});
+
+function getIndexFor(id, movies) {
+  console.log(typeof id);
+  let index = null;
+  for(let i=0; i<movies.length; i++) {
+    if (movies[i].id === id) index = i;
+  }
+  return index;
+}
+
 function getMovies() {
   let cars = [];
   try {
